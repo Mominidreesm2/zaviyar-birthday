@@ -68,4 +68,143 @@ h1 {
 
 .candle {
     width: 12px;
-    hei
+    height: 45px;
+    background: white;
+    position: absolute;
+    top: -65px;
+    left: 84px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.flame {
+    width: 16px;
+    height: 24px;
+    background: radial-gradient(circle, #ffd000, #ff7b00);
+    position: absolute;
+    top: -24px;
+    left: -2px;
+    border-radius: 50%;
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.85; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.invite {
+    max-width: 430px;
+    margin: 30px auto;
+    background: white;
+    padding: 28px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    display: none;
+    animation: pop 1s ease forwards;
+}
+
+@keyframes pop {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.invite h2 {
+    font-family: 'Pacifico', cursive;
+    color: #ff4f81;
+    margin-bottom: 10px;
+}
+
+.invite p {
+    font-size: 1.05rem;
+    color: #333;
+    line-height: 1.7;
+}
+
+.footer {
+    margin-top: 35px;
+    font-size: 0.95rem;
+    color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- Birthday Music -->
+<audio autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1>🎉 Zaviyar Turns ONE 🎉</h1>
+    <p class="subtitle">Tap the candle and make a wish 🕯️</p>
+
+    <img src="zaviyar.jpg" class="photo" alt="Zaviyar">
+
+    <div class="cake">
+        <div class="candle" id="candle">
+            <div class="flame" id="flame"></div>
+        </div>
+    </div>
+
+    <div class="invite" id="invite">
+        <h2>Birthday Invitation 🎂</h2>
+        <p><strong>Our little prince Zaviyar is turning 1!</strong></p>
+        <p>📅 <strong>Date:</strong> 25 January</p>
+        <p>⏰ <strong>Time:</strong> 4:00 PM onwards</p>
+        <p>📍 <strong>Venue:</strong><br>
+        42A Queens Road,<br>
+        Haywards Heath</p>
+        <p>Join us for cake, smiles & lots of love 💖</p>
+    </div>
+
+    <div class="footer">
+        Made with love for Zaviyar 🧸✨
+    </div>
+</div>
+
+<script>
+// Confetti animation
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let pieces = [];
+for (let i = 0; i < 220; i++) {
+    pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 3 + 1,
+        c: `hsl(${Math.random() * 360},100%,70%)`
+    });
+}
+
+function confetti() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.c;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill();
+        p.y += p.d;
+        if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(confetti);
+}
+confetti();
+
+// Candle blow
+document.getElementById("candle").onclick = () => {
+    document.getElementById("flame").style.display = "none";
+    document.getElementById("invite").style.display = "block";
+};
+</script>
+
+</body>
+</html>
